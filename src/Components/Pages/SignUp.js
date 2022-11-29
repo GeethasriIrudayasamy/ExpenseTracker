@@ -27,7 +27,10 @@ const SignUp = () => {
                     },
                 }
             )
-                .then((res) => alert("You have successfully signed up"))
+                .then((res) => {
+                    alert("You have successfully signed up");
+                    console.log("user has successfully signed up");
+                })
                 .then(() => event.target.reset())
                 .catch((err) => alert("something went wrong"));
         } else {
