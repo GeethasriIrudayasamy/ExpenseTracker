@@ -1,11 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../Store/AuthContext";
 import classes from "./SignUp.module.css";
 
 const SignUp = () => {
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
     const confirmPasswordInputRef = useRef();
+    const auth_ctx = useContext(AuthContext);
     const [isLogin, setIsLogin] = useState(false);
     const navigate = useNavigate();
 
@@ -47,10 +49,11 @@ const SignUp = () => {
         })
             .then(async (res) => {
                 if (res.ok) {
+                    alert("Your profile is successfully updated!");
                     event.target.reset();
                     const data = await res.json();
-                    localStorage.setItem("token", data.idToken);
-                    event.target.reset();
+                    auth_ctx.login(data.idToken);
+
                     navigate("/profile");
                     return data;
                 } else {
