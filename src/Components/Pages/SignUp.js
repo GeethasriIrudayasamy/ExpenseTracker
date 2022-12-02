@@ -8,6 +8,7 @@ const SignUp = () => {
     const passwordInputRef = useRef();
     const confirmPasswordInputRef = useRef();
     const auth_ctx = useContext(AuthContext);
+
     const [isLogin, setIsLogin] = useState(false);
     const navigate = useNavigate();
 
@@ -49,7 +50,6 @@ const SignUp = () => {
         })
             .then(async (res) => {
                 if (res.ok) {
-                    alert("Your profile is successfully updated!");
                     event.target.reset();
                     const data = await res.json();
                     auth_ctx.login(data.idToken);
