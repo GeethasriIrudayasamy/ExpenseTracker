@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import AuthContext from "./Store/AuthContext";
 import SignUp from "./Components/Pages/SignUp";
 import Profile from "./Components/Pages/Profile";
+import VerifyEmail from "./Components/Pages/VerifyEmail";
 
 const App = () => {
     const auth_ctx = useContext(AuthContext);
@@ -15,6 +16,10 @@ const App = () => {
             <Route
                 path="/profile"
                 element={loggedIn ? <Profile /> : <SignUp />}
+            />
+            <Route
+                path="/verify"
+                element={loggedIn ? <VerifyEmail /> : <SignUp />}
             />
         </Routes>
     );

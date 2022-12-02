@@ -8,12 +8,15 @@ const SignUp = () => {
     const passwordInputRef = useRef();
     const confirmPasswordInputRef = useRef();
     const auth_ctx = useContext(AuthContext);
-
+    const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const navigate = useNavigate();
 
     const switchAuthModeHandler = () => {
         setIsLogin((prevState) => !prevState);
+    };
+    const loaderHandler = () => {
+        setIsLoading(true);
     };
 
     const submitHandler = (event) => {
@@ -54,7 +57,7 @@ const SignUp = () => {
                     const data = await res.json();
                     auth_ctx.login(data.idToken);
 
-                    navigate("/profile");
+                    navigate("/verify");
                     return data;
                 } else {
                     await res.json();
@@ -116,8 +119,11 @@ const SignUp = () => {
                 <div className={classes.actions}>
                     {!isLogin && (
                         <div>
-                            <button className={classes.actionButton}>
-                                SignUp
+                            <button
+                                className={classes.actionButton}
+                                onClick={loaderHandler}
+                            >
+                                {!isLoading ? "SignUp" : "Sending Request..."}
                             </button>
                             <p>
                                 Already have an account?{" "}
@@ -132,8 +138,11 @@ const SignUp = () => {
                     )}
                     {isLogin && (
                         <div>
-                            <button className={classes.actionButton}>
-                                Login
+                            <button
+                                className={classes.actionButton}
+                                onClick={loaderHandler}
+                            >
+                                {!isLoading ? "Login" : "Sending Request..."}
                             </button>
                             <p>
                                 Don't have an account?{" "}

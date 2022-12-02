@@ -13,9 +13,14 @@ const Profile = () => {
     const authCtx = useContext(AuthContext);
     const idToken = localStorage.getItem("token");
     const [isComplete, setIsComplete] = useState(false);
+    const [updateStatus, setUpdateStatus] = useState();
 
     const profileUpdateHandler = () => {
         setIsComplete(true);
+    };
+
+    const onCancelHandler = () => {
+        setIsComplete(false);
     };
 
     if (authCtx.isLoggedIn) {
@@ -45,8 +50,13 @@ const Profile = () => {
             .then((data) => {
                 console.log(data);
                 collectedData.email = data.users[0].email;
-                collectedData.displayName = data.users[0].displayName;
-                collectedData.photoUrl = data.users[0].photoUrl;
+                if (data.users[0].displayName && data.users[0].photoUrl) {
+                    collectedData.displayName = data.users[0].displayName;
+                    collectedData.photoUrl = data.users[0].photoUrl;
+                    setUpdateStatus(true);
+                } else {
+                    setUpdateStatus(false);
+                }
             })
             .catch((err) => {
                 alert(err.message);
@@ -57,17 +67,32 @@ const Profile = () => {
         <React.Fragment>
             <div className={classes.start}>
                 <h3>Welcome to Expense Tracker!</h3>
-                <p className={classes.statement}>
-                    Your profile is incomplete
-                    <button
-                        className={classes.actionToggle}
-                        onClick={profileUpdateHandler}
-                    >
-                        Complete now
-                    </button>
-                </p>
+                {!updateStatus && (
+                    <p className={classes.statement}>
+                        Your profile is incomplete
+                        <button
+                            className={classes.actionToggle}
+                            onClick={profileUpdateHandler}
+                        >
+                            Complete now
+                        </button>
+                    </p>
+                )}
+                {updateStatus && (
+                    <p className={classes.statement}>
+                        Your profile is Complete
+                        <button
+                            className={classes.actionToggle}
+                            onClick={profileUpdateHandler}
+                        >
+                            Edit now
+                        </button>
+                    </p>
+                )}
             </div>
-            {isComplete && <UpdateForm data={collectedData} />}
+            {isComplete && (
+                <UpdateForm data={collectedData} onCancel={onCancelHandler} />
+            )}
         </React.Fragment>
     );
 };
