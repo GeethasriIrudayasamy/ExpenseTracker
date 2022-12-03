@@ -1,10 +1,13 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import classes from "./VerifyEmail.module.css";
 
 const VerifyEmail = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const idToken = localStorage.getItem("token");
     const verifyEmailHandler = () => {
+        setIsLoading(true);
         fetch(
             "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyDUoMFOCJaFQ1wLumx5e7zumhzHPtkCUc0",
             {
@@ -20,10 +23,12 @@ const VerifyEmail = () => {
         )
             .then(async (res) => {
                 if (res.ok) {
+                    setIsLoading(false);
                     return res.json();
                 } else {
                     const data = await res.json();
                     let errorMessage = "Authentication Failed";
+
                     if (data && data.error && data.message)
                         errorMessage = data.error.message;
                     throw new Error(errorMessage);
@@ -31,8 +36,9 @@ const VerifyEmail = () => {
             })
             .then((data) => {
                 console.log(data);
-
-                navigate("/profile");
+                alert(
+                    "Verification mail is sent to your email. Kindly confirm your email and refresh the page"
+                );
             })
             .catch((err) => {
                 alert(err.message);
@@ -40,11 +46,12 @@ const VerifyEmail = () => {
     };
     return (
         <div className={classes.start}>
+            <p>Your email is not yet verified!</p>
             <button
                 onClick={verifyEmailHandler}
                 className={classes.actionButton}
             >
-                Verify Email
+                {!isLoading ? "Verify Email" : "Sending Request"}
             </button>
         </div>
     );

@@ -57,7 +57,7 @@ const SignUp = () => {
                     const data = await res.json();
                     auth_ctx.login(data.idToken);
 
-                    navigate("/verify");
+                    navigate("/profile");
                     return data;
                 } else {
                     await res.json();
