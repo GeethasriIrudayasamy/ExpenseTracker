@@ -17,6 +17,10 @@ const Profile = () => {
     const [isVerified, setIsVerified] = useState(true);
     const [updateStatus, setUpdateStatus] = useState();
 
+    const logoutHandler = () => {
+        authCtx.logout();
+    };
+
     const profileUpdateHandler = () => {
         setIsComplete(true);
     };
@@ -89,6 +93,12 @@ const Profile = () => {
                         >
                             Complete now
                         </button>
+                        <button
+                            className={classes.actionButton}
+                            onClick={logoutHandler}
+                        >
+                            Logout
+                        </button>
                     </p>
                 )}
                 {updateStatus && isVerified && (
@@ -99,6 +109,12 @@ const Profile = () => {
                             onClick={profileUpdateHandler}
                         >
                             Edit now
+                        </button>
+                        <button
+                            className={classes.actionButton}
+                            onClick={logoutHandler}
+                        >
+                            Logout
                         </button>
                     </p>
                 )}
