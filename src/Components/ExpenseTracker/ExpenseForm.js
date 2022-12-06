@@ -8,6 +8,7 @@ const ExpenseForm = (props) => {
     const amountInputRef = useRef();
     const titleInputRef = useRef();
     const categoryInputRef = useRef();
+    console.log(expCntxt);
 
     let content;
     const submitHandler = (event) => {
@@ -19,30 +20,51 @@ const ExpenseForm = (props) => {
             amount: amount,
             title: title,
             category: category,
+            id: new Date().getTime(),
         };
-        expCntxt.addExpense(expense);
+        expCntxt.addItems(expense);
+        event.target.reset();
     };
-    const expense = expCntxt.expenses.map((item) => (
-        <ExpenseList
-            amount={item.amount}
-            title={item.title}
-            category={item.category}
-        />
-    ));
-    if (expCntxt.expenses.length === 0) {
+
+    const editHandler = (item) => {
+        console.log(item);
+        amountInputRef.current.value = item.amount;
+        titleInputRef.current.value = item.title;
+        categoryInputRef.current.value = item.category;
+        expCntxt.removeItems(item);
+    };
+
+    let expense;
+    if (expCntxt.listOfItems.length > 0) {
+        expense = expCntxt.listOfItems.map((item) => (
+            <ExpenseList
+                key={item.item.id}
+                amount={item.item.amount}
+                title={item.item.title}
+                category={item.item.category}
+                id={item.item.id}
+                onEdit={() => {
+                    editHandler(item.item);
+                }}
+            />
+        ));
+    }
+    if (expCntxt.listOfItems.length === 0) {
         content = (
             <div
-                className={classes.start}
+                className={classes.expenses}
                 style={{ display: "block", textAlign: "center" }}
             >
                 <h3>No expense is found</h3>
             </div>
         );
     }
-    if (expCntxt.expenses.length > 0) {
+    if (expCntxt.listOfItems.length > 0) {
         content = (
-            <div className={classes.start} style={{ display: "block" }}>
-                <ul className={classes.ul}>{expense}</ul>
+            <div className={classes.expenses} style={{ display: "block" }}>
+                <ul key={expense.id} className={classes.ul}>
+                    {expense}
+                </ul>
             </div>
         );
     }
