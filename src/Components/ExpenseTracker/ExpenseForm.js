@@ -100,7 +100,9 @@ const ExpenseForm = (props) => {
                             <option value="Food">Food</option>
                             <option value="Travel">Travel</option>
                             <option value="Education">Education</option>
-                            <option value="Food">Movies</option>
+                            <option value="Movies">Movies</option>
+                            <option value="Health">Health</option>
+                            <option value="Entertainment">Entertainment</option>
                             <option value="Others">Others</option>
                         </select>
                     </div>

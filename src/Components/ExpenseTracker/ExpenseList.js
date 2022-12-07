@@ -9,9 +9,12 @@ const ExpenseList = (props) => {
     const removeItem = () => {
         expenseCtx.removeItems(props);
     };
-
+    const editHandler = () => {
+        props.onEdit();
+        removeItem();
+    };
     return (
-        <Table>
+        <Table style={{ marginBottom: "1rem" }}>
             <tbody>
                 <tr>
                     <th width="170">{props.category}</th>
@@ -23,7 +26,7 @@ const ExpenseList = (props) => {
                     <th width="50">
                         <BsFillPencilFill
                             className={classes.action}
-                            onClick={props.onEdit}
+                            onClick={editHandler}
                         />
                     </th>
                     <th>
