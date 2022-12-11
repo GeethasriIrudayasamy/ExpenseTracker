@@ -62,7 +62,7 @@ const ForgotPassword = () => {
                     onClick={loaderHandler}
                 >
                     {!isLoading ? "Send mail" : "Sending Request"}
-                </button>{" "}
+                </button>
             </form>
         </div>
     );

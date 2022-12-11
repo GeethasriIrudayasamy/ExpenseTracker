@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
+
 import Table from "react-bootstrap/Table";
 import classes from "./ExpenseList.module.css";
 import { BsFillTrashFill } from "react-icons/bs";
 import { BsFillPencilFill } from "react-icons/bs";
-import ExpenseContext from "../../Store/ExpenseContext";
+
 const ExpenseList = (props) => {
-    const expenseCtx = useContext(ExpenseContext);
     const removeItem = () => {
-        expenseCtx.removeItems(props);
+        props.onRemove(props);
     };
     const editHandler = () => {
         props.onEdit();

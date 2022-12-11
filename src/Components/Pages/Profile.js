@@ -1,6 +1,7 @@
-import React, { useState, useContext, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from "../../Store/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../Store/AuthRedux";
 import UpdateForm from "./UpdateForm";
 import classes from "./Profile.module.css";
 import VerifyEmail from "./VerifyEmail";
@@ -12,14 +13,16 @@ let collectedData = {
 };
 
 const Profile = () => {
-    const authCtx = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const isAuth = useSelector((state) => state.auth.isAuthenticated);
+
     const idToken = localStorage.getItem("token");
     const [isComplete, setIsComplete] = useState(false);
     const [isVerified, setIsVerified] = useState(true);
     const [updateStatus, setUpdateStatus] = useState();
 
     const logoutHandler = () => {
-        authCtx.logout();
+        dispatch(authActions.logout());
     };
 
     const profileUpdateHandler = () => {
@@ -31,7 +34,7 @@ const Profile = () => {
     };
 
     const profileHandler = useCallback(() => {
-        if (authCtx.isLoggedIn) {
+        if (isAuth) {
             fetch(
                 "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDUoMFOCJaFQ1wLumx5e7zumhzHPtkCUc0",
                 {
@@ -75,7 +78,7 @@ const Profile = () => {
                     alert(err.message);
                 });
         }
-    }, [authCtx.isLoggedIn, idToken]);
+    }, [isAuth, idToken]);
 
     useEffect(() => {
         profileHandler();

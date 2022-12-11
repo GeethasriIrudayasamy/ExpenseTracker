@@ -1,32 +1,34 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
-
-import AuthContext from "./Store/AuthContext";
+import { useSelector, useDispatch } from "react-redux";
 import SignUp from "./Components/Pages/SignUp";
 import Profile from "./Components/Pages/Profile";
 import VerifyEmail from "./Components/Pages/VerifyEmail";
 import ForgotPassword from "./Components/Pages/ForgotPassword";
 import ExpenseForm from "./Components/ExpenseTracker/ExpenseForm";
+import { authActions } from "./Store/AuthRedux";
 
 const App = () => {
-    const auth_ctx = useContext(AuthContext);
-    let loggedIn = auth_ctx.isLoggedIn;
+    const dispatch = useDispatch();
+    dispatch(authActions.setIsAuth());
+
+    const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
     return (
         <Routes>
             <Route path="/" element={<SignUp />} />
             <Route
                 path="/profile"
-                element={loggedIn ? <Profile /> : <SignUp />}
+                element={isAuth ? <Profile /> : <SignUp />}
             />
             <Route
                 path="/verify"
-                element={loggedIn ? <VerifyEmail /> : <SignUp />}
+                element={isAuth ? <VerifyEmail /> : <SignUp />}
             />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route
                 path="/ExpenseTracker"
-                element={loggedIn ? <ExpenseForm /> : <SignUp />}
+                element={isAuth ? <ExpenseForm /> : <SignUp />}
             />
         </Routes>
     );

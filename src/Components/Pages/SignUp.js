@@ -1,13 +1,16 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import AuthContext from "../../Store/AuthContext";
+import { authActions } from "../../Store/AuthRedux";
+import { useDispatch } from "react-redux";
 import classes from "./SignUp.module.css";
 
 const SignUp = () => {
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
     const confirmPasswordInputRef = useRef();
-    const auth_ctx = useContext(AuthContext);
+
+    const dispatch = useDispatch();
+
     const [isLoading, setIsLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
     const navigate = useNavigate();
@@ -55,8 +58,8 @@ const SignUp = () => {
                 if (res.ok) {
                     event.target.reset();
                     const data = await res.json();
-                    auth_ctx.login(data.idToken, data.email);
-
+                    dispatch(authActions.login(data.idToken));
+                    dispatch(authActions.setUserId(data.email));
                     navigate("/profile");
                     return data;
                 } else {
@@ -79,6 +82,7 @@ const SignUp = () => {
 
             .catch((err) => {
                 alert(err.message);
+                setIsLoading(false);
             });
     };
 
