@@ -139,14 +139,19 @@ const ExpenseForm = (props) => {
     }
     if (expenseItems.length > 0) {
         content = (
-            <div className={classes.expenses}>
+            <div>
                 {!isPremium && (
-                    <ul key={expenseItems.id} className={classes.ul}>
-                        {expense}
-                    </ul>
+                    <div
+                        className={classes.expenses}
+                        style={{ display: "block" }}
+                    >
+                        <ul key={expenseItems.id} className={classes.ul}>
+                            {expense}
+                        </ul>
+                    </div>
                 )}
                 {isPremium && (
-                    <div>
+                    <div className={classes.expenses}>
                         <p>Your total expense amount exceeded Rs.10000</p>
                         <button className={classes.premium}>Add Premium</button>
                     </div>
