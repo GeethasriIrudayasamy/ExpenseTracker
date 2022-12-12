@@ -1,3 +1,11 @@
+.expense-item__category {
+    color: white;
+}
+
+.expense-item__title {
+    color: white;
+}
+
 .expense-item__price {
     color: #ffa8e9;
 }
@@ -9,4 +17,23 @@
 
 .action:hover {
     color: rgb(146, 44, 255);
+}
+
+.expense-item__category_light {
+    color: rgb(24, 24, 24);
+}
+.expense-item__title_light {
+    color: rgb(24, 24, 24);
+}
+.expense-item__price_light {
+    color: #d80909;
+}
+
+.action_light {
+    color: black;
+    cursor: pointer;
+}
+
+.action_light:hover {
+    color: rgb(46, 46, 46);
 }

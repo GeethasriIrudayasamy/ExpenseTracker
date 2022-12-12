@@ -4,20 +4,29 @@ import { expActions } from "../../Store/ExpenseRedux";
 import axios from "axios";
 import ExpenseList from "./ExpenseList";
 import classes from "./ExpenseForm.module.css";
+import ToggleTheme from "../UI/Toggle";
+
 
 const ExpenseForm = (props) => {
     const dispatch = useDispatch();
     const email = useSelector((state) => state.auth.email);
     const expenses = useSelector((state) => state.exp.expenses);
     const isPremium = useSelector((state) => state.exp.isPremium);
+    const isDark = useSelector((state) => state.theme.isDark);
+    const [premiumFeat, setPremiumFeat] = useState(false);
     const [expenseItems, setexpenseItems] = useState([]);
 
     console.log(expenses);
+
     const amountInputRef = useRef();
     const titleInputRef = useRef();
     const categoryInputRef = useRef();
 
     let content;
+
+    const changePremiumFeat = () => {
+        setPremiumFeat(true);
+    };
 
     const getExpenseItemFromDb = useCallback(async () => {
         if (email) {
@@ -48,6 +57,29 @@ const ExpenseForm = (props) => {
             }
         }
     }, [email, dispatch]);
+
+    const downloadHandler = () => {
+        let blob = new Blob([makeCSV(expenses)]);
+        let file = URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.download = "expenses.csv";
+        a.href = file;
+        a.click();
+    };
+    function makeCSV(expenses) {
+        let arr = [];
+
+        expenses.forEach((expense) => {
+            let expenseArr = [];
+
+            expenseArr.push(expense.item.category);
+            expenseArr.push(expense.item.title);
+            expenseArr.push(expense.item.amount);
+
+            arr.push(expenseArr);
+        });
+        return arr.map((item) => item).join("\n");
+    }
 
     useEffect(() => {
         getExpenseItemFromDb();
@@ -130,10 +162,18 @@ const ExpenseForm = (props) => {
     if (expenseItems.length === 0) {
         content = (
             <div
-                className={classes.expenses}
+                className={
+                    isDark ? classes.expenses : classes["expenses_light"]
+                }
                 style={{ display: "block", textAlign: "center" }}
             >
-                <h3>No expense is found</h3>
+                <h3
+                    className={
+                        isDark ? classes.statement : classes["statement_light"]
+                    }
+                >
+                    No expense is found
+                </h3>
             </div>
         );
     }
@@ -142,7 +182,11 @@ const ExpenseForm = (props) => {
             <div>
                 {!isPremium && (
                     <div
-                        className={classes.expenses}
+                        className={
+                            isDark
+                                ? classes.expenses
+                                : classes["expenses_light"]
+                        }
                         style={{ display: "block" }}
                     >
                         <ul key={expenseItems.id} className={classes.ul}>
@@ -151,9 +195,51 @@ const ExpenseForm = (props) => {
                     </div>
                 )}
                 {isPremium && (
-                    <div className={classes.expenses}>
-                        <p>Your total expense amount exceeded Rs.10000</p>
-                        <button className={classes.premium}>Add Premium</button>
+                    <div
+                        className={
+                            isDark
+                                ? classes.expenses
+                                : classes["expenses_light"]
+                        }
+                    >
+                        {!premiumFeat && (
+                            <div>
+                                <p
+                                    className={
+                                        isDark
+                                            ? classes.statement
+                                            : classes["statement_light"]
+                                    }
+                                >
+                                    Your total expense amount exceeded Rs.10000
+                                </p>
+                                <button
+                                    className={
+                                        isDark
+                                            ? classes.premium
+                                            : classes["premium_light"]
+                                    }
+                                    onClick={changePremiumFeat}
+                                >
+                                    Add Premium
+                                </button>
+                            </div>
+                        )}
+                        {premiumFeat && (
+                            <div>
+                                <ToggleTheme />
+                                <button
+                                    className={
+                                        isDark
+                                            ? classes.premium
+                                            : classes["premium_light"]
+                                    }
+                                    onClick={downloadHandler}
+                                >
+                                    Download File
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -162,9 +248,18 @@ const ExpenseForm = (props) => {
 
     return (
         <React.Fragment>
-            <form onSubmit={submitHandler} className={classes.start}>
+            <form
+                onSubmit={submitHandler}
+                className={isDark ? classes.start : classes["start_light"]}
+            >
                 <div className={classes["new-expense__controls"]}>
-                    <div className={classes["new-expense__control"]}>
+                    <div
+                        className={
+                            isDark
+                                ? classes["new-expense__control"]
+                                : classes["new-expense__control_light"]
+                        }
+                    >
                         <label htmlFor="title">Title</label>
                         <input
                             type="text"
@@ -173,7 +268,13 @@ const ExpenseForm = (props) => {
                             required
                         />
                     </div>
-                    <div className={classes["new-expense__control"]}>
+                    <div
+                        className={
+                            isDark
+                                ? classes["new-expense__control"]
+                                : classes["new-expense__control_light"]
+                        }
+                    >
                         <label htmlFor="Amount">Amount</label>
                         <input
                             type="number"
@@ -184,7 +285,13 @@ const ExpenseForm = (props) => {
                         />
                     </div>
 
-                    <div className={classes["new-expense__control"]}>
+                    <div
+                        className={
+                            isDark
+                                ? classes["new-expense__control"]
+                                : classes["new-expense__control_light"]
+                        }
+                    >
                         <label htmlFor="category">Category</label>
                         <select id="category" ref={categoryInputRef} required>
                             <option>Select One</option>
@@ -198,9 +305,19 @@ const ExpenseForm = (props) => {
                         </select>
                     </div>
 
-                    <div className={classes["new-expense__control"]}>
+                    <div
+                        className={
+                            isDark
+                                ? classes["new-expense__control"]
+                                : classes["new-expense__control_light"]
+                        }
+                    >
                         <button
-                            className={classes["new-expense__actions"]}
+                            className={
+                                isDark
+                                    ? classes["new-expense__actions"]
+                                    : classes["new-expense__actions_light"]
+                            }
                             type="submit"
                         >
                             Add Expense

@@ -1,13 +1,15 @@
 import React, { useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { authActions } from "../../Store/AuthRedux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import classes from "./SignUp.module.css";
 
 const SignUp = () => {
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
     const confirmPasswordInputRef = useRef();
+
+    const isDark = useSelector((state) => state.theme.isDark);
 
     const dispatch = useDispatch();
 
@@ -87,11 +89,15 @@ const SignUp = () => {
     };
 
     return (
-        <section className={classes.auth}>
+        <section className={isDark ? classes.auth : classes["auth_light"]}>
             <h1>{isLogin ? "LOGIN" : "SIGN UP"}</h1>
             <p>Please enter the following credentials!</p>
             <form onSubmit={submitHandler}>
-                <div className={classes.control}>
+                <div
+                    className={
+                        isDark ? classes.control : classes["control_light"]
+                    }
+                >
                     <label htmlFor="email">Email Address</label>
                     <input
                         type="text"
@@ -100,7 +106,11 @@ const SignUp = () => {
                         ref={emailInputRef}
                     />
                 </div>
-                <div className={classes.control}>
+                <div
+                    className={
+                        isDark ? classes.control : classes["control_light"]
+                    }
+                >
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
@@ -110,7 +120,11 @@ const SignUp = () => {
                     />
                 </div>
                 {!isLogin && (
-                    <div className={classes.control}>
+                    <div
+                        className={
+                            isDark ? classes.control : classes["control_light"]
+                        }
+                    >
                         <label htmlFor="confirmPassword">
                             Confirm Password
                         </label>
@@ -123,16 +137,30 @@ const SignUp = () => {
                     </div>
                 )}
                 <Link to="/forgot-password">
-                    <button className={classes.actionToggle}>
+                    <button
+                        className={
+                            isDark
+                                ? classes.actionToggle
+                                : classes["actionToggle_light"]
+                        }
+                    >
                         Forgot Password?
                     </button>
                 </Link>
 
-                <div className={classes.actions}>
+                <div
+                    className={
+                        isDark ? classes.actions : classes["actions_light"]
+                    }
+                >
                     {!isLogin && (
                         <div>
                             <button
-                                className={classes.actionButton}
+                                className={
+                                    isDark
+                                        ? classes.actionButton
+                                        : classes["actionButton_light"]
+                                }
                                 onClick={loaderHandler}
                             >
                                 {!isLoading ? "SignUp" : "Sending Request..."}
@@ -140,7 +168,11 @@ const SignUp = () => {
                             <p>
                                 Already have an account?{" "}
                                 <button
-                                    className={classes.actionToggle}
+                                    className={
+                                        isDark
+                                            ? classes.actionToggle
+                                            : classes["actionToggle_light"]
+                                    }
                                     onClick={switchAuthModeHandler}
                                 >
                                     Login
@@ -151,7 +183,11 @@ const SignUp = () => {
                     {isLogin && (
                         <div>
                             <button
-                                className={classes.actionButton}
+                                className={
+                                    isDark
+                                        ? classes.actionButton
+                                        : classes["actionButton_light"]
+                                }
                                 onClick={loaderHandler}
                             >
                                 {!isLoading ? "Login" : "Sending Request..."}
@@ -159,7 +195,11 @@ const SignUp = () => {
                             <p>
                                 Don't have an account?{" "}
                                 <button
-                                    className={classes.actionToggle}
+                                    className={
+                                        isDark
+                                            ? classes.actionToggle
+                                            : classes["actionToggle_light"]
+                                    }
                                     onClick={switchAuthModeHandler}
                                 >
                                     SignUp

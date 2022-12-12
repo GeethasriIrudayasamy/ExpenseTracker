@@ -15,6 +15,7 @@ let collectedData = {
 const Profile = () => {
     const dispatch = useDispatch();
     const isAuth = useSelector((state) => state.auth.isAuthenticated);
+    const isDark = useSelector((state) => state.theme.isDark);
 
     const idToken = localStorage.getItem("token");
     const [isComplete, setIsComplete] = useState(false);
@@ -86,19 +87,33 @@ const Profile = () => {
 
     return (
         <React.Fragment>
-            <div className={classes.start}>
+            <div className={isDark ? classes.start : classes["start_light"]}>
                 <h3>Welcome to Expense Tracker!</h3>
                 {!updateStatus && isVerified && (
-                    <p className={classes.statement}>
+                    <p
+                        className={
+                            isDark
+                                ? classes.statement
+                                : classes["statement_light"]
+                        }
+                    >
                         Your profile is incomplete
                         <button
-                            className={classes.actionToggle}
+                            className={
+                                isDark
+                                    ? classes.actionToggle
+                                    : classes["actionToggle_light"]
+                            }
                             onClick={profileUpdateHandler}
                         >
                             Complete now
                         </button>
                         <button
-                            className={classes.actionButton}
+                            className={
+                                isDark
+                                    ? classes.actionButton
+                                    : classes["actionButton_light"]
+                            }
                             onClick={logoutHandler}
                         >
                             Logout
@@ -106,16 +121,30 @@ const Profile = () => {
                     </p>
                 )}
                 {updateStatus && isVerified && (
-                    <p className={classes.statement}>
+                    <p
+                        className={
+                            isDark
+                                ? classes.statement
+                                : classes["statement_light"]
+                        }
+                    >
                         Your profile is Complete
                         <button
-                            className={classes.actionToggle}
+                            className={
+                                isDark
+                                    ? classes.actionToggle
+                                    : classes["actionToggle_light"]
+                            }
                             onClick={profileUpdateHandler}
                         >
                             Edit now
                         </button>
                         <button
-                            className={classes.actionButton}
+                            className={
+                                isDark
+                                    ? classes.actionButton
+                                    : classes["actionButton_light"]
+                            }
                             onClick={logoutHandler}
                         >
                             Logout
@@ -128,8 +157,16 @@ const Profile = () => {
             )}
             {!isVerified && <VerifyEmail />}
             <Link to="/ExpenseTracker" style={{ textDecoration: "none" }}>
-                <div className={classes.start}>
-                    <button className={classes.actionButton2}>
+                <div
+                    className={isDark ? classes.start : classes["start_light"]}
+                >
+                    <button
+                        className={
+                            isDark
+                                ? classes.actionButton2
+                                : classes["actionButton2_light"]
+                        }
+                    >
                         Expense Tracker
                     </button>
                 </div>

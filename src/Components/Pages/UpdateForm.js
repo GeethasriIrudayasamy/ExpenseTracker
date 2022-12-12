@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
-
+import { useSelector } from "react-redux";
 import classes from "./UpdateForm.module.css";
 
 const UpdateForm = (props) => {
     const idToken = localStorage.getItem("token");
+    const isDark = useSelector((state) => state.theme.isDark);
 
     const fullNameInputRef = useRef();
     const photoUrlInputRef = useRef();
@@ -46,9 +47,9 @@ const UpdateForm = (props) => {
     };
 
     return (
-        <div className={classes.wrapper}>
+        <div className={isDark ? classes.wrapper : classes["wrapper_light"]}>
             <h1>Contact Details</h1>
-            <form className={classes.form}>
+            <form className={isDark ? classes.form : classes["form_light"]}>
                 <label htmlFor="fullName">Full Name </label>
                 <input
                     type="text"
@@ -66,7 +67,11 @@ const UpdateForm = (props) => {
                     ref={photoUrlInputRef}
                     defaultValue={props.data.photoUrl}
                 />
-                <div className={classes.actions}>
+                <div
+                    className={
+                        isDark ? classes.actions : classes["actions_light"]
+                    }
+                >
                     <button onClick={updateProfileHandler}>Update</button>
                     <button onClick={props.onCancel}>Close</button>
                 </div>
